@@ -194,13 +194,25 @@ open Elmish
 open Components
 
 [<JSX.Component>]
+let PartyPicker dispatch =
+    let randomName() = "Bob"
+    let chooseAWinner _ = Browser.Dom.window.alert $"Happy birthday, {randomName()}!"
+    JSX.jsx """
+    <div>
+        <b>Party picker</b>
+        <button onClick={chooseAWinner}>Choose a winner</button>
+    </div>
+    """
+
+[<JSX.Component>]
 let App () =
     let model, dispatch = React.useElmish (init, update, arg = 2)
-
+    let sayHello = fun _ -> Browser.Dom.window.alert "Hello from F#"
     JSX.jsx
         $"""
     <div className="container mx-5 mt-5 is-max-desktop">
         <p className="title">My Todos</p>
+        {PartyPicker dispatch}
         {InputField dispatch}
         <ul>{model.Todos |> List.map (fun t -> TodoView dispatch t t.Id)}</ul>
     </div>
